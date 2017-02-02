@@ -1,4 +1,4 @@
-package de.rgse.timecap.rest;
+package de.rgse.timecap.rest.util;
 
 import java.io.IOException;
 import java.io.InputStream;

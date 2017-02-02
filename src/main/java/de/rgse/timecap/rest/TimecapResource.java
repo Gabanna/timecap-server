@@ -6,6 +6,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -19,9 +20,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import de.rgse.timecap.model.Timeevent;
-import de.rgse.timecap.service.TimecapService;
+import de.rgse.timecap.service.TimecapServiceImpl;
 
-@Path("/time-event")
+@Path("/time-events")
 @RequestScoped
 @Transactional
 @Consumes(MediaType.APPLICATION_JSON)
@@ -29,14 +30,22 @@ import de.rgse.timecap.service.TimecapService;
 public class TimecapResource {
 
 	@Inject
-	private TimecapService timecapService;
+	private TimecapServiceImpl timecapService;
 
 	@GET
-	public Response getTimeevents(@QueryParam("userId") String userId, @QueryParam("locationId") String locationId) {
+	public Response getTimeevents(
+			@QueryParam("userId") String userId,
+			@QueryParam("locationId") String locationId,
+			@QueryParam("offset") @DefaultValue("-1") int offset,
+			@DefaultValue("-1") @QueryParam("limit") int limit,
+			@DefaultValue("-1") @QueryParam("day") int day,
+			@DefaultValue("-1") @QueryParam("month") int month,
+			@DefaultValue("-1") @QueryParam("year") int year)
+	{
 		ResponseBuilder response = null;
 
 		try {
-			List<Timeevent> timeevents = timecapService.getTimeevents(userId, locationId);
+			List<Timeevent> timeevents = timecapService.getTimeevents(userId, locationId, offset, limit, day, month, year);
 			response = timeevents.isEmpty() ? Response.noContent() : Response.ok(timeevents);
 
 		} catch (Exception exception) {

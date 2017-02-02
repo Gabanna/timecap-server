@@ -21,7 +21,7 @@ public class QTimeevent extends EntityPathBase<Timeevent> {
 
     public final StringPath id = createString("id");
 
-    public final DatePath<java.util.Calendar> instant = createDate("instant", java.util.Calendar.class);
+    public final DateTimePath<java.util.Calendar> instant = createDateTime("instant", java.util.Calendar.class);
 
     public final StringPath locationId = createString("locationId");
 

@@ -1,4 +1,4 @@
-package de.rgse.timecap.rest;
+package de.rgse.timecap.rest.util;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -21,7 +21,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
-@WebFilter(filterName = "JwtFilter", urlPatterns = "/*")
+@WebFilter(filterName = "JwtFilter", urlPatterns = "/time-event*")
 public class JwtFilter implements Filter {
 
 	private static final Logger LOGGER = LogManager.getLogManager().getLogger(JwtFilter.class.getSimpleName());
