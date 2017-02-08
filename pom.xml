@@ -16,6 +16,7 @@
 	</properties>
 
 	<build>
+	
 		<finalName>timecap-server</finalName>
 		<plugins>
 			<plugin>
