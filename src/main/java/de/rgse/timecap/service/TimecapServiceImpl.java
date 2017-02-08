@@ -50,7 +50,7 @@ public class TimecapServiceImpl implements TimecapService {
 			query.limit(limit);
 		}
 
-		return query.orderBy(TIMEEVENT.instant.desc()).list(TIMEEVENT);
+		return query.orderBy(TIMEEVENT.instant.asc()).list(TIMEEVENT);
 	}
 
 	@Override

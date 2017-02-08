@@ -8,10 +8,25 @@
 
 	<properties>
 		<version.querydsl>3.7.4</version.querydsl>
+		<version.wildfly-swarm>2017.2.0</version.wildfly-swarm>
+		<version.java>1.8</version.java>
+		<version.h2>1.4.193</version.h2>
 	</properties>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.wildfly.swarm</groupId>
+				<artifactId>wildfly-swarm-plugin</artifactId>
+				<version>${version.wildfly-swarm}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>package</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -22,8 +37,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.6.1</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>${version.java}</source>
+					<target>${version.java}</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -131,15 +146,34 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.stormpath.sdk</groupId>
-			<artifactId>stormpath-sdk-api</artifactId>
-			<version>1.4.1</version>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>jpa</artifactId>
+			<version>${version.wildfly-swarm}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.stormpath.sdk</groupId>
-			<artifactId>stormpath-sdk-httpclient</artifactId>
-			<version>1.4.1</version>
-			<scope>runtime</scope>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>undertow</artifactId>
+			<version>${version.wildfly-swarm}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>jaxrs</artifactId>
+			<version>${version.wildfly-swarm}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>datasources</artifactId>
+			<version>${version.wildfly-swarm}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>cdi</artifactId>
+			<version>${version.wildfly-swarm}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${version.h2}</version>
 		</dependency>
 	</dependencies>
 </project>

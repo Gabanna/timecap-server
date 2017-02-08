@@ -1,9 +1,13 @@
 package de.rgse.timecap.rest;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -22,6 +26,7 @@ import com.google.gson.JsonObject;
 import de.rgse.timecap.model.Timeevent;
 import de.rgse.timecap.service.TimecapServiceImpl;
 
+@Named
 @Path("/time-events")
 @RequestScoped
 @Transactional
@@ -29,26 +34,25 @@ import de.rgse.timecap.service.TimecapServiceImpl;
 @Produces(MediaType.APPLICATION_JSON)
 public class TimecapResource {
 
+	private static final Logger LOGGER = LogManager.getLogManager().getLogger(TimecapResource.class.getSimpleName());
+
 	@Inject
 	private TimecapServiceImpl timecapService;
 
 	@GET
-	public Response getTimeevents(
-			@QueryParam("userId") String userId,
-			@QueryParam("locationId") String locationId,
-			@QueryParam("offset") @DefaultValue("-1") int offset,
-			@DefaultValue("-1") @QueryParam("limit") int limit,
-			@DefaultValue("-1") @QueryParam("day") int day,
-			@DefaultValue("-1") @QueryParam("month") int month,
-			@DefaultValue("-1") @QueryParam("year") int year)
-	{
+	public Response getTimeevents(@QueryParam("userId") String userId, @QueryParam("locationId") String locationId,
+			@QueryParam("offset") @DefaultValue("-1") int offset, @DefaultValue("-1") @QueryParam("limit") int limit,
+			@DefaultValue("-1") @QueryParam("day") int day, @DefaultValue("-1") @QueryParam("month") int month,
+			@DefaultValue("-1") @QueryParam("year") int year) {
 		ResponseBuilder response = null;
 
 		try {
-			List<Timeevent> timeevents = timecapService.getTimeevents(userId, locationId, offset, limit, day, month, year);
+			List<Timeevent> timeevents = timecapService.getTimeevents(userId, locationId, offset, limit, day, month,
+					year);
 			response = timeevents.isEmpty() ? Response.noContent() : Response.ok(timeevents);
 
 		} catch (Exception exception) {
+			LOGGER.log(Level.SEVERE, "", exception);
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("error", exception.getMessage());
 

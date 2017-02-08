@@ -1,6 +1,7 @@
 package de.rgse.timecap.model;
 
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -16,8 +17,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import de.rgse.timecap.service.DateParser;
+
 @Entity
 public class Timeevent {
+
+	static {
+		Locale.setDefault(Locale.GERMANY);
+	}
 
 	@Transient
 	private final Logger LOGGER = LogManager.getLogManager().getLogger(getClass().getSimpleName());
@@ -28,7 +35,7 @@ public class Timeevent {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonInclude(Include.NON_NULL)
-	@JsonFormat(pattern="yy-MM-dd'T'HH:mm:ss")
+	@JsonFormat(pattern = DateParser.PATTERN)
 	private Calendar instant;
 
 	private String userId;
@@ -46,8 +53,8 @@ public class Timeevent {
 	@PrePersist
 	private void prePersist() {
 		id = UUID.randomUUID().toString();
-		if(null == instant) {
-			instant = Calendar.getInstance();
+		if (null == instant) {
+			instant = Calendar.getInstance(Locale.GERMANY);
 		}
 	}
 
