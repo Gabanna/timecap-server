@@ -137,7 +137,7 @@
 			<version>0.7.0</version>
 		</dependency>
 
-		<dependency>
+		<!-- dependency>
 			<groupId>org.wildfly.swarm</groupId>
 			<artifactId>jpa</artifactId>
 			<version>${version.wildfly-swarm}</version>
@@ -166,6 +166,6 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>${version.h2}</version>
-		</dependency>
+		</dependency-->
 	</dependencies>
 </project>
