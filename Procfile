@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -Djboss.http.port=$PORT -jar target/wildfly-swarm-example-jaxrs-shrinkwrap-1.0-SNAPSHOT-swarm.jar
+web: java -Dfile.encoding=UTF-8 -Dswarm.http.port=$PORT -jar target/swarmdemo4-swarm.jar

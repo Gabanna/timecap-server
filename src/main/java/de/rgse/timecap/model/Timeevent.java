@@ -38,6 +38,8 @@ public class Timeevent {
 	@JsonFormat(pattern = DateParser.PATTERN)
 	private Calendar instant;
 
+	private long time;
+	
 	private String userId;
 
 	private String locationId;
@@ -52,9 +54,12 @@ public class Timeevent {
 
 	@PrePersist
 	private void prePersist() {
-		id = UUID.randomUUID().toString();
+		if(null == id) {
+			id = UUID.randomUUID().toString();			
+		}
+		
 		if (null == instant) {
-			instant = Calendar.getInstance(Locale.GERMANY);
+			time = System.currentTimeMillis();
 		}
 	}
 
@@ -74,4 +79,11 @@ public class Timeevent {
 		return locationId;
 	}
 
+	public long getTime() {
+		return time;
+	}
+	
+	public void setTime(long time) {
+		this.time = time;
+	}
 }

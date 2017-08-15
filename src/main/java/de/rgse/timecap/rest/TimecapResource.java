@@ -1,5 +1,6 @@
 package de.rgse.timecap.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -78,5 +79,32 @@ public class TimecapResource {
 		}
 
 		return response.build();
+	}
+	
+	@POST
+	@Path("migrate")
+	public Response migrate(List<Timeevent> timeevents) {
+		Gson gson = new Gson();
+
+		List<String> success = new ArrayList<>();
+		List<String> fail = new ArrayList<>();
+		
+		for (Timeevent timeevent : timeevents) {
+			try {
+				Timeevent event = timecapService.createTimeevent(timeevent);
+				success.add(event.getId());
+				
+			} catch (Exception exception) {
+				JsonObject jsonObject = new JsonObject();
+				jsonObject.addProperty("error", exception.getMessage());				
+				jsonObject.addProperty("event", timeevent.getId());	
+			}
+		}
+
+		JsonObject result = new JsonObject();
+		result.addProperty("successfull", gson.toJson(success));
+		result.addProperty("fail", gson.toJson(fail));
+		
+		return Response.ok(result.toString()).build();
 	}
 }
