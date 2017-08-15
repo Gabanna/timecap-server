@@ -25,6 +25,8 @@ public class QTimeevent extends EntityPathBase<Timeevent> {
 
     public final StringPath locationId = createString("locationId");
 
+    public final NumberPath<Long> time = createNumber("time", Long.class);
+
     public final StringPath userId = createString("userId");
 
     public QTimeevent(String variable) {
