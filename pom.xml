@@ -22,6 +22,8 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.0.0</version>
 				<configuration>
+<archive>            <manifest>              <addClasspath>true</addClasspath>            </manifest>          </archive>
+                
 				</configuration>
 			</plugin>
 			<plugin>
