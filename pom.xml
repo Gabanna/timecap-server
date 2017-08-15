@@ -55,7 +55,7 @@
 				<version>${version.wildfly.swarm}</version>
 				<configuration>
 					<mainClass>de.rgse.timecap.Launcher</mainClass>
-					<bundleDependencies>true</bundleDependencies>
+					<useUberJar>true</useUberJar>
 				</configuration>
 				<executions>
 					<execution>
