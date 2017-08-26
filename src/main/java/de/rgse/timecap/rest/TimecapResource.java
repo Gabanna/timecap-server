@@ -1,6 +1,8 @@
 package de.rgse.timecap.rest;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -37,6 +39,8 @@ public class TimecapResource {
 
 	private static final Logger LOGGER = LogManager.getLogManager().getLogger(TimecapResource.class.getSimpleName());
 
+	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+	
 	@Inject
 	private TimecapServiceImpl timecapService;
 
@@ -50,6 +54,29 @@ public class TimecapResource {
 		try {
 			List<Timeevent> timeevents = timecapService.getTimeevents(userId, locationId, offset, limit, day, month,
 					year);
+			response = timeevents.isEmpty() ? Response.noContent() : Response.ok(timeevents);
+
+		} catch (Exception exception) {
+			LOGGER.log(Level.SEVERE, "", exception);
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("error", exception.getMessage());
+
+			response = Response.serverError().entity(new Gson().toJson(jsonObject));
+		}
+
+		return response.build();
+	}
+	
+	@GET
+	@Path("/query")
+	public Response query(@QueryParam("userId") String userId, @QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate) {
+		ResponseBuilder response = null;
+
+		try {
+			Date start = FORMAT.parse(startDate);
+			Date end = FORMAT.parse(endDate);
+			
+			List<Timeevent> timeevents = timecapService.getTimeevents(userId, start, end);
 			response = timeevents.isEmpty() ? Response.noContent() : Response.ok(timeevents);
 
 		} catch (Exception exception) {

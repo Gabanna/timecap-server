@@ -1,11 +1,13 @@
 package de.rgse.timecap.service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.expr.BooleanExpression;
 
 import de.rgse.timecap.model.QTimeevent;
 import de.rgse.timecap.model.Timeevent;
@@ -57,5 +59,11 @@ public class TimecapServiceImpl implements TimecapService {
 	public Timeevent createTimeevent(Timeevent timeevent) {
 		entityManager.persist(timeevent);
 		return timeevent;
+	}
+
+	@Override
+	public List<Timeevent> getTimeevents(String userId, Date start, Date end) {
+		BooleanExpression expression = TIMEEVENT.userId.eq(userId).and(TIMEEVENT.time.goe(start.getTime()).and(TIMEEVENT.time.lt(end.getTime())));
+		return new JPAQuery(entityManager).from(TIMEEVENT).where(expression).list(TIMEEVENT);
 	}
 }

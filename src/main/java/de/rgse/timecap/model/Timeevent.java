@@ -58,7 +58,7 @@ public class Timeevent {
 			id = UUID.randomUUID().toString();			
 		}
 		
-		if (null == instant) {
+		if (0 == time) {
 			time = System.currentTimeMillis();
 		}
 	}
