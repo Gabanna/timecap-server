@@ -73,8 +73,8 @@ public class TimecapResource {
 		ResponseBuilder response = null;
 
 		try {
-			Date start = FORMAT.parse(startDate);
-			Date end = FORMAT.parse(endDate);
+			Date start = startDate != null ? FORMAT.parse(startDate) : null;
+			Date end = endDate != null ? FORMAT.parse(endDate) : null;
 			
 			List<Timeevent> timeevents = timecapService.getTimeevents(userId, start, end);
 			response = timeevents.isEmpty() ? Response.noContent() : Response.ok(timeevents);

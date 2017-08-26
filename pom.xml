@@ -200,9 +200,9 @@
 			<version>23.0</version>
 		</dependency>
 		<dependency>
-	<groupId>com.thetransactioncompany</groupId>
-	<artifactId>cors-filter</artifactId>
-	<version>2.6</version>
-</dependency>
+			<groupId>com.thetransactioncompany</groupId>
+			<artifactId>cors-filter</artifactId>
+			<version>2.6</version>
+		</dependency>
 	</dependencies>
 </project>

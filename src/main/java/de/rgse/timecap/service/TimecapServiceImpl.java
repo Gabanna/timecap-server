@@ -63,7 +63,28 @@ public class TimecapServiceImpl implements TimecapService {
 
 	@Override
 	public List<Timeevent> getTimeevents(String userId, Date start, Date end) {
-		BooleanExpression expression = TIMEEVENT.userId.eq(userId).and(TIMEEVENT.time.goe(start.getTime()).and(TIMEEVENT.time.lt(end.getTime())));
-		return new JPAQuery(entityManager).from(TIMEEVENT).where(expression).list(TIMEEVENT);
+		BooleanExpression expression = null;
+		
+		if(userId != null) {
+			expression = TIMEEVENT.userId.eq(userId);
+		}
+		
+		if(start != null) {
+			BooleanExpression clause = TIMEEVENT.time.goe(start.getTime());
+			expression = expression == null ? clause : expression.and(clause);
+		}
+		
+		if(end != null) {
+			BooleanExpression clause = TIMEEVENT.time.lt(end.getTime());
+			expression = expression == null ? clause : expression.and(clause);
+		}
+		
+		JPAQuery query = new JPAQuery(entityManager).from(TIMEEVENT);
+		
+		if(expression != null) {
+			query = query.where(expression);
+		}
+		
+		return query.list(TIMEEVENT);
 	}
 }
