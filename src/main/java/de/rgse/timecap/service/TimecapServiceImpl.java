@@ -1,7 +1,10 @@
 package de.rgse.timecap.service;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,24 +27,19 @@ public class TimecapServiceImpl implements TimecapService {
 			int year) {
 		JPAQuery query = new JPAQuery(entityManager).from(TIMEEVENT);
 
+		if(year > -1) {
+			Calendar lowerThreshold = new GregorianCalendar(year, month >= 0 ? month : 0, day >= 0 ? day : 1);
+			Calendar upperThreshold = new GregorianCalendar(year, month >= 0 ? month : 11, day >= 0 ? day : getMaximum(year, month));
+		
+			query = query.where(TIMEEVENT.time.between(lowerThreshold.getTimeInMillis(), upperThreshold.getTimeInMillis()));
+		}
+		
 		if (userId != null) {
 			query = query.where(TIMEEVENT.userId.eq(userId));
 		}
 
 		if (locationId != null) {
 			query = query.where(TIMEEVENT.locationId.eq(locationId));
-		}
-
-		if (day >= 0) {
-			query = query.where(TIMEEVENT.instant.dayOfMonth().eq(day));
-		}
-
-		if (month >= 0) {
-			query = query.where(TIMEEVENT.instant.month().eq(month));
-		}
-
-		if (year >= 0) {
-			query = query.where(TIMEEVENT.instant.year().eq(year));
 		}
 
 		if (offset >= 0) {
@@ -52,7 +50,7 @@ public class TimecapServiceImpl implements TimecapService {
 			query.limit(limit);
 		}
 
-		return query.orderBy(TIMEEVENT.instant.asc()).list(TIMEEVENT);
+		return query.orderBy(TIMEEVENT.time.asc()).list(TIMEEVENT);
 	}
 
 	@Override
@@ -86,5 +84,12 @@ public class TimecapServiceImpl implements TimecapService {
 		}
 		
 		return query.list(TIMEEVENT);
+	}
+	
+	private int getMaximum(int year, int month) {
+		Calendar calendar = new GregorianCalendar(Locale.getDefault());
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.MONTH, month);
+		return calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 }
